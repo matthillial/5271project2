@@ -1,3 +1,8 @@
-python_program: python_program.py
-    python ./$< >$@
-    chmod +x $@
+#!/usr/bin/env python
+
+python_program: lock.py
+	cp lock.py lock
+	chmod +x lock
+
+clean:
+	rm lock
