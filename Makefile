@@ -8,11 +8,11 @@ FILES = keygen lock unlock
 
 all: keygen.py lock.py unlock.py
 	cp keygen.py keygen
-	chmod +x keygen.py
+	chmod +x keygen
 	cp lock.py lock
-	chmod +x lock.py
+	chmod +x lock
 	cp unlock.py unlock
-	chmod +x unlock.py
+	chmod +x unlock
 
 # lock: lock.py
 # 	cp lock.py lock
