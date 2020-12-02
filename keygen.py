@@ -24,7 +24,9 @@ public_filename = arg_values[1]
 private_filename = arg_values[2]
 
 key = RSA.generate(2048)
+#print("Key: " + key + "\n")
 private_key = key.exportKey()
+#print("Key obj: " + private_key + "\n")
 file_out = open(private_filename, "wb")
 file_out.write("SUBJECT:\n" + subject + "\nALGORITHM:\nRSA\n")
 file_out.write(private_key)
