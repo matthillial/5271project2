@@ -9,6 +9,7 @@ testKey = RSA.generate(2048)
 arg_names = ["-d", "-p", "-r", "-s"]
 arg_values = ["", "", "", ""]
 
+#extract command line args into arg_values
 for i in range(len(sys.argv)):
     for j in range(len(arg_names)):
         if sys.argv[i] == arg_names[j] and i < len(sys.argv) - 1:
@@ -16,23 +17,30 @@ for i in range(len(sys.argv)):
             i = i + 1
             break
 
+#check for missing args
 for j in range(len(arg_names)):
     #print("arg " + arg_names[j] + " = " + arg_values[j])
     if arg_values[j] == "":
         print("Usage: ./lock -d <dir to lock> -p <public key> -r <private key> -s <subject>\n")
         sys.exit("Missing value for arg \"" + arg_names[j] + "\".")
 
+#extract args into variables
 directory = arg_values[0]
 public_filename = arg_values[1]
 private_filename = arg_values[2]
 subject = arg_values[3]
 
+#open and tokenize certificates by line
 public_file = open(public_filename, "rb")
 private_file = open(private_filename, "rb")
 public = public_file.read()
 private = private_file.read()
 public_tokens = public.split("\n")
 private_tokens = private.split("\n")
+
+#validate subject matches public certificate
+if subject != public_tokens[1]:
+    sys.exit("Subject does not match public certificate")
 
 #extract public and private keys from certificates
 public_key_text = public_tokens[4] + "\n"
@@ -50,8 +58,9 @@ print(key)
 cipher_rsa = PKCS1_OAEP.new(public_key)
 enc_key = cipher_rsa.encrypt(key)
 
-keyfile = open("keyfile", "wb")
-keyfile_sig = open("keyfile.sig", "wb")
+#open and write keyfile and signature
+keyfile = open(directory + "/keyfile", "wb")
+keyfile_sig = open(directory + "/keyfile.sig", "wb")
 keyfile.write(enc_key)
 keyfile_sig.write(private_key_text)
 
