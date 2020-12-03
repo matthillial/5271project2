@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 import sys
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
+from Crypto.Random import get_random_bytes
+
+testKey = RSA.generate(2048)
 
 arg_names = ["-d", "-p", "-r", "-s"]
 arg_values = ["", "", "", ""]
@@ -24,27 +27,39 @@ public_filename = arg_values[1]
 private_filename = arg_values[2]
 subject = arg_values[3]
 
-public_file = open(public_filename, "r")
-private_file = open(private_filename, "r")
+public_file = open(public_filename, "rb")
+private_file = open(private_filename, "rb")
 public = public_file.read()
 private = private_file.read()
 public_tokens = public.split("\n")
 private_tokens = private.split("\n")
-# print(public_tokens)
-# print(private_tokens)
 
-key = public_tokens[5]
-for x in range(6, len(public_tokens)-1):
-    key += public_tokens[x]
+#extract public and private keys from certificates
+public_key_text = public_tokens[4] + "\n"
+for x in range(5, len(public_tokens)):
+    public_key_text += public_tokens[x] + "\n"
+print(public_key_text)
+public_key = RSA.import_key(public_key_text)
+private_key_text = private_tokens[4] + "\n"
+for x in range(5, len(private_tokens)):
+    private_key_text += private_tokens[x] + "\n"
 
-RSAkey = RSA.import_key(key)
+#generate AES key and encode it with public key
+key = get_random_bytes(16)
+print(key)
+cipher_rsa = PKCS1_OAEP.new(public_key)
+enc_key = cipher_rsa.encrypt(key)
+
+keyfile = open("keyfile", "wb")
+keyfile_sig = open("keyfile.sig", "wb")
+keyfile.write(enc_key)
+keyfile_sig.write(private_key_text)
+
+
 
 iv = "0000000000000000"
 data = "secret"
-cipher = AES.new(RSAkey, AES.MODE_GCM, iv)
-ciphertext, tag = cipher.encrypt_and_digest(data)
-print(ciphertext)
-print(tag)
-cipher = AES.new(RSAkey, AES.MODE_GCM, iv)
-plaintext = cipher.decrypt_and_verify(ciphertext, tag)
-print(plaintext)
+cipher = AES.new(key, AES.MODE_GCM, iv)
+# cipher = AES.new(RSAkey, AES.MODE_GCM, iv)
+# plaintext = cipher.decrypt_and_verify(ciphertext, tag)
+# print(plaintext)
