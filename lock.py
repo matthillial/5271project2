@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
@@ -35,8 +35,8 @@ subject = arg_values[3]
 #open and tokenize certificates by line
 public_file = open(public_filename, "rb")
 private_file = open(private_filename, "rb")
-public = public_file.read()
-private = private_file.read()
+public = public_file.read().decode()
+private = private_file.read().decode()
 public_tokens = public.split("\n")
 private_tokens = private.split("\n")
 
@@ -71,9 +71,9 @@ keyfile_sig = open(directory + "/keyfile.sig", "wb")
 keyfile.write(enc_key)
 keyfile_sig.write(signature)
 
-iv = "0000000000000000"
-data = "secret"
-cipher = AES.new(key, AES.MODE_GCM, iv)
+# iv = "0000000000000000"
+# data = "secret"
+# cipher = AES.new(key, AES.MODE_GCM, iv)
 # cipher = AES.new(RSAkey, AES.MODE_GCM, iv)
 # plaintext = cipher.decrypt_and_verify(ciphertext, tag)
 # print(plaintext)

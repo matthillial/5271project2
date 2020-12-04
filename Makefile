@@ -7,6 +7,7 @@ FILES = keygen lock unlock
 # 	chmod +x $@
 
 all: keygen.py lock.py unlock.py
+	#pip3 install pycryptodome
 	cp keygen.py keygen
 	chmod +x keygen
 	cp lock.py lock

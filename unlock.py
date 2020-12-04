@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
@@ -30,10 +30,10 @@ private_filename = arg_values[2]
 subject = arg_values[3]
 
 #open and tokenize certificates by line
-public_file = open(public_filename, "r")
-private_file = open(private_filename, "r")
-public = public_file.read()
-private = private_file.read()
+public_file = open(public_filename, "rb")
+private_file = open(private_filename, "rb")
+public = public_file.read().decode()
+private = private_file.read().decode()
 public_tokens = public.split("\n")
 private_tokens = private.split("\n")
 
@@ -52,8 +52,8 @@ for x in range(5, len(private_tokens)):
 private_key = RSA.import_key(private_key_text)
 
 #open and read keyfile and signature
-keyfile = open(directory + "/keyfile", "r")
-keyfile_sig = open(directory + "/keyfile.sig", "r")
+keyfile = open(directory + "/keyfile", "rb")
+keyfile_sig = open(directory + "/keyfile.sig", "rb")
 enc_key = keyfile.read()
 key_sig = keyfile_sig.read()
 
