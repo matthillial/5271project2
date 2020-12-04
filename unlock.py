@@ -98,10 +98,10 @@ print("(3) Successfully decrypt the AES key")
 
 ###################### Delete keyfile and keyfile.sig ##########################
 
-if os.path.exists("keyfile"):
-  os.remove("keyfile")
-if os.path.exists("keyfile.sig"):
-  os.remove("keyfile.sig")
+if os.path.exists(directory+"/keyfile"):
+  os.remove(directory+"/keyfile")
+if os.path.exists(directory+"/keyfile.sig"):
+  os.remove(directory+"/keyfile.sig")
 print("(4) Successfully delete keyfile and keyfile.sig")
 
 ###################### Verify and decrypt the directory ########################

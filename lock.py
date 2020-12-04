@@ -74,11 +74,7 @@ enc_session_key = cipher_rsa.encrypt(session_key)
 # Encrypt the data with the session key
 cipher_aes = AES.new(session_key, AES.MODE_EAX)
 ciphertext, tag = cipher_aes.encrypt_and_digest(key_AES)
-# Write encrypted asymmetric key into file
 x = enc_session_key+cipher_aes.nonce+tag+ciphertext
-keyfile = open(directory + "/keyfile", "wb")
-keyfile.write(x)
-keyfile.close()
 print("(2) Successfully encrypt the message")
 
 ############################ Sign the encrypted AES key ########################
@@ -87,10 +83,6 @@ print("(2) Successfully encrypt the message")
 private_key = RSA.import_key(private_key_text)
 h = SHA256.new(x)
 signature = pkcs1_15.new(private_key).sign(h)
-# write the signature into keyfile.sig
-keyfilesig = open(directory + "/keyfile.sig", "wb")
-keyfilesig.write(signature)
-keyfilesig.close()
 print("(3) Successfully sign the message")
 
 ############################ Synmmetric AES key ################################
@@ -124,3 +116,14 @@ for (dirpath, dirnames, filenames) in walk(directory):
         file.write(ciphertest)
         file.close()
 print("(4) Successfully encrypt/sign the directory")
+
+# After ASE encryption/tag, wirite keyfile and keyfile.sig
+# Write encrypted asymmetric key into file
+keyfile = open(directory + "/keyfile", "wb")
+keyfile.write(x)
+keyfile.close()
+
+# write the signature into keyfile.sig
+keyfilesig = open(directory + "/keyfile.sig", "wb")
+keyfilesig.write(signature)
+keyfilesig.close()
