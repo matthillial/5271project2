@@ -3,7 +3,7 @@
 $ make
 
 (2) Generate RAS public/private key pair
-$ ./keygen keygen.py -s [subject name] -pub [pub_key file] -priv [priv_key file]
+$ ./keygen -s [subject name] -pub [pub_key file] -priv [priv_key file]
 
 (3) Lock
 $ ./lock -d [dir] -p [pub_key file] -r [priv_key file] -s [subject of destination]
