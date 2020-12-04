@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 import os
 import json
@@ -65,11 +66,11 @@ print("(1) Successfully verify the subject")
 # Use sender's Public key to verify the signature
 public_key = RSA.import_key(public_key_text)
 # Read the signature
-keyfilesig = open("keyfile.sig", "rb")
+keyfilesig = open(directory + "/keyfile.sig", "rb")
 signature = keyfilesig.read()
 keyfilesig.close()
 # Read the keyfile
-keyfile = open("keyfile", "rb")
+keyfile = open(directory + "/keyfile", "rb")
 # Part of next step: Use private_key to decrypt the message
 private_key = RSA.import_key(private_key_text)
 enc_session_key, nonce, tag, ciphertext = [ keyfile.read(x) for x in (private_key.size_in_bytes(), 16, 16, -1) ]
