@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 import json
 from base64 import b64encode
@@ -75,7 +76,7 @@ cipher_aes = AES.new(session_key, AES.MODE_EAX)
 ciphertext, tag = cipher_aes.encrypt_and_digest(key_AES)
 # Write encrypted asymmetric key into file
 x = enc_session_key+cipher_aes.nonce+tag+ciphertext
-keyfile = open("keyfile", "wb")
+keyfile = open(directory + "/keyfile", "wb")
 keyfile.write(x)
 keyfile.close()
 print("(2) Successfully encrypt the message")
@@ -87,7 +88,7 @@ private_key = RSA.import_key(private_key_text)
 h = SHA256.new(x)
 signature = pkcs1_15.new(private_key).sign(h)
 # write the signature into keyfile.sig
-keyfilesig = open("keyfile.sig", "wb")
+keyfilesig = open(directory + "/keyfile.sig", "wb")
 keyfilesig.write(signature)
 keyfilesig.close()
 print("(3) Successfully sign the message")
