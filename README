@@ -1,12 +1,13 @@
+Python version 3.8
 
 (1) Generate executables
 $ make
 
 (2) Generate RAS public/private key pair
-$ ./keygen -s [subject name] -pub [pub_key file] -priv [priv_key file]
+$ python keygen.py -s [subject name] -pub [pub_key file] -priv [priv_key file]
 
 (3) Lock
-$ ./lock -d [dir] -p [pub_key file] -r [priv_key file] -s [subject of destination]
+$ python lock.py -d [dir] -p [pub_key file] -r [priv_key file] -s [subject of destination]
 
 (4) Unlock
-$ ./unlock -d testdir -p [pub_key file] -r [priv_key file] -s [subject of source]
+$ python unlock.py -d testdir -p [pub_key file] -r [priv_key file] -s [subject of source]
