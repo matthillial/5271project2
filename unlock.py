@@ -2,6 +2,8 @@
 import sys
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
 
 arg_names = ["-d", "-p", "-r", "-s"]
 arg_values = ["", "", "", ""]
@@ -43,6 +45,7 @@ if subject != public_tokens[1]:
 public_key_text = public_tokens[4] + "\n"
 for x in range(5, len(public_tokens)):
     public_key_text += public_tokens[x] + "\n"
+public_key = RSA.import_key(public_key_text)
 private_key_text = private_tokens[4] + "\n"
 for x in range(5, len(private_tokens)):
     private_key_text += private_tokens[x] + "\n"
@@ -53,6 +56,10 @@ keyfile = open(directory + "/keyfile", "r")
 keyfile_sig = open(directory + "/keyfile.sig", "r")
 enc_key = keyfile.read()
 key_sig = keyfile_sig.read()
+
+#verify signature using public key
+hash = SHA256.new(enc_key)
+pkcs1_15.new(public_key).verify(hash, key_sig)
 
 #decrypt encoded AES key using private key
 cipher_rsa = PKCS1_OAEP.new(private_key)
